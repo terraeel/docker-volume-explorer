@@ -12,11 +12,11 @@ def create_db():
     with sqlite3.connect('volumes.db') as connection:
         c = connection.cursor()
         table = '''CREATE TABLE  volumes(
-		time INTEGER NOT NULL,
+        id INTEGER PRIMARY KEY,
+        DATETIME DEFAULT (STRFTIME('%d-%m-%Y   %H:%M', 'NOW','localtime')),
 		name TEXT NOT NULL,
 		mountpoint TEXT NOT NULL,
-		size INTEGER
-	)'''
+		size INTEGER)'''
         c.execute(table)
     return True
 
@@ -24,4 +24,3 @@ def create_db():
 if __name__ == '__main__':
     drop_table()
     create_db()
-
