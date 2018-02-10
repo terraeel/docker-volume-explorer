@@ -2,7 +2,7 @@ import os
 import sys
 import docker
 import sqlite3
-from datetime import date, datetime
+#from datetime import date, datetime
 import time
 
 
@@ -29,16 +29,16 @@ def publish_data():
     c = conn.cursor()
     client = docker.from_env()
     volume = client.volumes.list()
-    time = datetime.now()
+#    time = datetime.now()
     for volumes in volume:
         name = volumes.name
         mountpoint = volumes.attrs['Mountpoint']
         size = get_dir_size(mountpoint)
-        c.execute("INSERT INTO volumes VALUES (?,?,?,?)", (time, name, mountpoint, size))
+        c.execute("INSERT INTO volumes (name, mountpoint, size) VALUES (?,?,?)", (name, mountpoint, size))
     conn.commit()
     conn.close()
 
-
 if __name__ == '__main__':
-    publish_data()
-    time.sleep(3600)
+    while True:
+        publish_data()
+        time.sleep(30)
